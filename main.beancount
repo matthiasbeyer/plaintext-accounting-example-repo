@@ -1,0 +1,103 @@
+option "operating_currency" "EUR"
+
+; Let's define "EUR" as commodity
+; The EURO was "released" on 1999-01-01
+;
+; It is also common, to use your own birthdate as date for creating commodities,
+; because before that you normally do not care, do you? :-)
+;
+; "name" and "asset-class" is just some metadata about the commodity
+1999-01-01 commodity EUR
+    name: "EURO"
+    asset-class: "Cash"
+
+; And now lets also have USD as commodity
+1792-04-02 commodity USD
+    name: "US Dollar"
+    asset-class: "Cash"
+
+; From now on, lets assume our birthday is on 2000-01-01, which we now use for
+; creating accounts
+
+; First, our "Cash" (what we have physically in our pocket).
+; That account uses EUR as its currency
+2000-01-01 open Assets:Cash EUR
+
+; We could also have USD in our pocket, for which we'd use a sub-account
+; We could also use the Assets:Cash account for this, but we would have to
+; remove the EUR currency association (see above) then
+2000-01-01 open Assets:Cash:USD USD
+
+; From time to time, we buy Clubmate from our pocket.
+; The currency here is optional (as it is for all accounts)
+2000-01-01 open Expenses:Cash EUR
+; We could also have it more fine-grained and have an account just for clubmate:
+; 2000-01-01 open Expenses:Clubmate EUR
+; Or even with some categories
+; 2000-01-01 open Expenses:Groceries:Drinks:NonAlc:Clubmate EUR
+
+; Lets have some more accounts
+2000-01-01 open Expenses:Entertainment
+2000-01-01 open Expenses:Health
+2000-01-01 open Expenses:Hobbies:Bike
+2000-01-01 open Expenses:Hobbies:Music
+2000-01-01 open Expenses:Insurance
+2000-01-01 open Expenses:Other
+2000-01-01 open Expenses:Phone
+2000-01-01 open Expenses:Presents
+2000-01-01 open Expenses:Travel
+
+; From time to time, we lend people money or lend money from people.
+; We do that in EUR
+2000-01-01 open Liabilities:PrivateLoans EUR
+
+; And now lets have some bank accounts as well. We opened them when we were 16
+2016-01-01 open Assets:DE:ING EUR
+2016-01-01 open Assets:DE:ING:Giro EUR
+2016-01-01 open Assets:DE:ING:Tagesgeld EUR
+2016-01-01 open Assets:US:BoA:Checking USD
+
+; We got allowance when we turned 10
+2010-01-01 open Income:Allowance EUR
+
+; And when we got 18, we had our first income when we worked at the Faerbe
+2010-01-01 open Income:DE:Faerbe EUR
+
+; ----
+;
+; Now lets have some postings
+;
+; ---
+
+; before our first allowance, our balances were zero. So we assert this:
+2010-01-01 balance Liabilities:PrivateLoans 0.00 EUR
+2010-01-01 balance Income:Allowance         0.00 EUR
+2010-01-01 balance Income:DE:Faerbe         0.00 EUR
+2016-01-01 balance Assets:DE:ING            0.00 EUR
+2016-01-01 balance Assets:DE:ING:Giro       0.00 EUR
+2016-01-01 balance Assets:DE:ING:Tagesgeld  0.00 EUR
+2016-01-01 balance Assets:US:BoA:Checking   0.00 USD
+
+; but then it finally happened
+; lets have that in another file tho
+; this include does not have to be here, it could also be at the top of the
+; file. Only the dates of the postings count
+include "allowance.beancount"
+
+; we got allowance from age 10 to 18, starting at 5 EUR, increasing 5 EUR each
+; year. So on our 19th birthday, we had quite some money!
+; That _came_ from the Income:Allowance account, so that account is _negative_
+; now.
+2019-01-01 balance Income:Allowance -2760.00 EUR
+
+; But our assets are positive, of course... because we also earned money at the
+; Faerbe at that time already. But we also spent some.
+include "teenage-spendings.beancount"
+2023-01-01 balance Assets:Cash +20.00 EUR
+2023-01-01 balance Assets:DE:ING:Tagesgeld 6000.05 EUR
+
+
+
+; When we turned 18, we got some _real_ money. Plus that additional year of
+; allowance when we were 18, that was really nice
+include "faerbe.beancount"

@@ -1,0 +1,23 @@
+; We had a lot of cash that we did not use, so we brought it to the bank
+
+; This posting does not have a payee and no narration
+; but it has a tag
+2016-02-14 * #saving
+    Assets:Cash -5500.00 EUR
+    Assets:DE:ING:Tagesgeld +5000.00 EUR
+    Assets:DE:ING:Giro +500.00 EUR
+
+2020-04-12 * #saving
+    Assets:Cash -2000.00 EUR
+    Assets:DE:ING:Tagesgeld +1800.00 EUR
+    Assets:DE:ING:Giro +200.00 EUR
+
+2021-08-03 * #saving
+    Assets:Cash -2000.00 EUR
+    Assets:DE:ING:Tagesgeld +1800.00 EUR
+    Assets:DE:ING:Giro +200.00 EUR
+
+2022-02-04 * "Fahrradhändler Furtwangen"
+    Expenses:Hobbies:Bike +2599.95 EUR
+    Assets:DE:ING:Tagesgeld
+
